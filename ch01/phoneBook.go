@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+// Entry entry
 type Entry struct {
 	Name    string
 	Surname string

@@ -11,8 +11,7 @@ func main() {
 	if err != nil {
 		log.Println(err)
 		return
-	} else {
-		log.SetOutput(sysLog)
-		log.Print("Everything is fine!")
 	}
+	log.SetOutput(sysLog)
+	log.Print("Everything is fine!")
 }
