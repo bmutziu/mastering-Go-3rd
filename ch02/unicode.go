@@ -5,6 +5,7 @@ import (
 	"unicode"
 )
 
+// main function  
 func main() {
 	const sL = "\x99\x00ab\x50\x00\x23\x50\x29\x9c"
 
