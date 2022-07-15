@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// Entry CSV
 type Entry struct {
 	Name       string
 	Surname    string
@@ -18,10 +19,12 @@ type Entry struct {
 }
 
 // CSVFILE resides in the home directory of the current user
-var CSVFILE = "/Users/mtsouk/csv.data"
+var CSVFILE = "/Users/bmutziu/csv.data"
 
-var data = []Entry{}
-var index map[string]int
+var (
+	data  = []Entry{}
+	index map[string]int
+)
 
 func readCSVFile(filepath string) error {
 	_, err := os.Stat(filepath)
@@ -74,7 +77,7 @@ func saveCSVFile(filepath string) error {
 func createIndex() error {
 	index = make(map[string]int)
 	for i, k := range data {
-		key := k.Tel
+		key := k.LastAccess
 		index[key] = i
 	}
 	return nil
@@ -112,7 +115,7 @@ func insert(pS *Entry) error {
 func deleteEntry(key string) error {
 	i, ok := index[key]
 	if !ok {
-		return fmt.Errorf("%s cannot be found!", key)
+		return fmt.Errorf("%s cannot be found", key)
 	}
 	data = append(data[:i], data[i+1:]...)
 	// Update the index - key does not exist any more
@@ -158,15 +161,20 @@ func main() {
 	// If error is not nil, it means that the file does not exist
 	if err != nil {
 		fmt.Println("Creating", CSVFILE)
-		f, err := os.Create(CSVFILE)
-		if err != nil {
-			fmt.Println(err)
+		f, errbis := os.Create(CSVFILE)
+		if errbis != nil {
+			fmt.Println(errbis)
 			return
 		}
 		f.Close()
 	}
 
 	fileInfo, err := os.Stat(CSVFILE)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	// Is it a regular file?
 	mode := fileInfo.Mode()
 	if !mode.IsRegular() {

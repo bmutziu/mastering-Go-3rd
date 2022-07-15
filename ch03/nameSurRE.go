@@ -22,4 +22,11 @@ func main() {
 	s := arguments[1]
 	ret := matchNameSur(s)
 	fmt.Println(ret)
+
+	for i, arg := range os.Args[1:] {
+		fmt.Println(i, arg)
+		s := arg
+		ret := matchNameSur(s)
+		fmt.Println(ret)
+	}
 }

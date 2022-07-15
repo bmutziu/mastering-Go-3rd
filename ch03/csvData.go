@@ -4,8 +4,10 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"unicode/utf8"
 )
 
+// Record for CSV
 type Record struct {
 	Name       string
 	Surname    string
@@ -37,7 +39,7 @@ func readCSVFile(filepath string) ([][]string, error) {
 	return lines, nil
 }
 
-func saveCSVFile(filepath string) error {
+func saveCSVFile(filepath string, separator string) error {
 	csvfile, err := os.Create(filepath)
 	if err != nil {
 		return err
@@ -46,7 +48,7 @@ func saveCSVFile(filepath string) error {
 
 	csvwriter := csv.NewWriter(csvfile)
 	// Changing the default field delimiter to tab
-	csvwriter.Comma = '\t'
+	csvwriter.Comma, _ = utf8.DecodeRuneInString(separator)
 	for _, row := range myData {
 		temp := []string{row.Name, row.Surname, row.Number, row.LastAccess}
 		_ = csvwriter.Write(temp)
@@ -56,13 +58,14 @@ func saveCSVFile(filepath string) error {
 }
 
 func main() {
-	if len(os.Args) != 3 {
-		fmt.Println("csvData input output!")
+	if len(os.Args) != 4 {
+		fmt.Println("csvData input output separator!")
 		return
 	}
 
 	input := os.Args[1]
 	output := os.Args[2]
+	sep := os.Args[3]
 	lines, err := readCSVFile(input)
 	if err != nil {
 		fmt.Println(err)
@@ -81,7 +84,7 @@ func main() {
 		fmt.Println(temp)
 	}
 
-	err = saveCSVFile(output)
+	err = saveCSVFile(output, sep)
 	if err != nil {
 		fmt.Println(err)
 		return

@@ -22,4 +22,18 @@ func main() {
 	s := arguments[1]
 	ret := matchInt(s)
 	fmt.Println(ret)
+
+	integers := 0
+	nonintegers := 0
+	for _, arg := range os.Args[1:] {
+		s := arg
+		ret := matchInt(s)
+		fmt.Println(ret)
+		if ret {
+			integers++
+		} else {
+			nonintegers++
+		}
+	}
+	fmt.Println("Totals ", integers, " ", nonintegers)
 }
